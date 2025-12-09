@@ -443,16 +443,16 @@ export class TasksListComponent implements OnInit {
     
     if (!this.draggedTask) return;
 
-    const statusMap: { [key: string]: { id: number, color: string } } = {
-      'Planificación': { id: 1, color: '#ff9800' },
-      'En Progreso': { id: 2, color: '#1976d2' },
-      'Completado': { id: 3, color: '#4caf50' }
+    const statusMap: { [key: string]: { id: string, color: string } } = {
+      'Planificación': { id: '1', color: '#ff9800' },
+      'En Progreso': { id: '2', color: '#1976d2' },
+      'Completado': { id: '3', color: '#4caf50' }
     };
 
     const newStatus = statusMap[newStatusName];
     
     if (this.draggedTask.status.id !== newStatus.id) {
-      const updatedTask = {
+      const updatedTask: Task = {
         ...this.draggedTask,
         status: {
           id: newStatus.id,
@@ -461,14 +461,7 @@ export class TasksListComponent implements OnInit {
         }
       };
 
-      this.taskService.updateTask(updatedTask.id, updatedTask).subscribe({
-        next: () => {
-          this.taskService.getTasks();
-        },
-        error: (error) => {
-          console.error('Error updating task status:', error);
-        }
-      });
+      this.taskService.updateTask(updatedTask.id, updatedTask);
     }
 
     this.draggedTask = null;

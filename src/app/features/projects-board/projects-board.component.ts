@@ -443,16 +443,16 @@ export class ProjectsBoardComponent implements OnInit {
     
     if (!this.draggedProject) return;
 
-    const statusMap: { [key: string]: { id: number, color: string } } = {
-      'Planificación': { id: 1, color: '#ff9800' },
-      'En Progreso': { id: 2, color: '#1976d2' },
-      'Completado': { id: 3, color: '#4caf50' }
+    const statusMap: { [key: string]: { id: string, color: string } } = {
+      'Planificación': { id: '1', color: '#ff9800' },
+      'En Progreso': { id: '2', color: '#1976d2' },
+      'Completado': { id: '3', color: '#4caf50' }
     };
 
     const newStatus = statusMap[newStatusName];
     
     if (this.draggedProject.status.id !== newStatus.id) {
-      const updatedProject = {
+      const updatedProject: Project = {
         ...this.draggedProject,
         status: {
           id: newStatus.id,
@@ -461,14 +461,7 @@ export class ProjectsBoardComponent implements OnInit {
         }
       };
 
-      this.projectService.updateProject(updatedProject.id, updatedProject).subscribe({
-        next: () => {
-          this.projectService.getProjects();
-        },
-        error: (error) => {
-          console.error('Error updating project status:', error);
-        }
-      });
+      this.projectService.updateProject(updatedProject.id, updatedProject);
     }
 
     this.draggedProject = null;
